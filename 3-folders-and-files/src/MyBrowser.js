@@ -1,22 +1,38 @@
 import React, { Component } from "react";
-
+import data from "./data.json";
+import Folder from "./Folder";
+import File from "./File";
 export class MyBrowser extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      data: null,
-    };
-  }
+  //   this.state = {
+  //     data: null,
+  //   };
+  // }
 
-  componentDidMount() {}
+  // componentDidMount() {
+  //   fetch("./data.json")
+  //     .then(res => {
+  // 			console.log(res);
+  // 			return res.json();
+  // 		})
+  //     .then(data => this.setState({ data }))
+  //     .catch(err => console.log(err));
+  // }
 
   render() {
-    if (this.state.data === null) {
-      return <div>Loading...</div>;
-    }
+    console.log(data);
 
-    return <div>Loaded</div>;
+    return data.map(item => {
+      if (item.type === "FOLDER") {
+        return <Folder key={item.name} {...item} />;
+      }
+
+      if (item.type === "FILE") {
+        return <File key={item.name} {...item} />;
+      }
+    });
   }
 }
 

@@ -2,10 +2,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* text-align: center; */
   color: white;
   font-size: calc(10px + 2vmin);
   background-color: #5f6061;
+}
+
+.folder {
+  cursor: pointer;
+}
+.folder:hover {
+  color: tomato;
 }
