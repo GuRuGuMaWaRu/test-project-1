@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+
+import "../styles/Folder.css";
 import File from "./File";
+
 export class Folder extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +18,7 @@ export class Folder extends Component {
   }
 
   render() {
-    const { name, type, children, level } = this.props;
+    const { name, children, level } = this.props;
 
     return (
       <>

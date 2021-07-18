@@ -1,0 +1,7 @@
+.folder {
+  color: rgb(233, 193, 186);
+  cursor: pointer;
+}
+.folder:hover {
+  color: tomato;
+}

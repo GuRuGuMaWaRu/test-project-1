@@ -1,0 +1,8 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  font-size: calc(10px + 2vmin);
+  background-color: #5f6061;
+}
