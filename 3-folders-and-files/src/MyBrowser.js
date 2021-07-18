@@ -26,11 +26,9 @@ export class MyBrowser extends Component {
 
     return data.map(item => {
       if (item.type === "FOLDER") {
-        return <Folder key={item.name} {...item} />;
-      }
-
-      if (item.type === "FILE") {
-        return <File key={item.name} {...item} />;
+        return <Folder key={item.name} level={1} {...item} />;
+      } else {
+        return <File key={item.name} level={1} {...item} />;
       }
     });
   }

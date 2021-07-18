@@ -15,21 +15,24 @@ export class Folder extends Component {
   }
 
   render() {
-    const { name, type, children } = this.props;
+    const { name, type, children, level } = this.props;
 
     return (
       <>
-        <div className="folder" onClick={this.handleExpansion}>
+        <div
+          className="folder"
+          style={{ marginLeft: `${(level - 1) * 2}rem` }}
+          onClick={this.handleExpansion}
+        >
+          {this.state.expanded && "+"}
           {name}
         </div>
         {this.state.expanded &&
           children.map((item, idx) => {
             if (item.type === "FOLDER") {
-              return <Folder key={item.name} {...item} />;
-            }
-
-            if (item.type === "FILE") {
-              return <File key={item.name} {...item} />;
+              return <Folder key={item.name} level={level + 1} {...item} />;
+            } else {
+              return <File key={item.name} level={level + 1} {...item} />;
             }
           })}
       </>
