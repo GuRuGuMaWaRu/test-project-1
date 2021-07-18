@@ -6,14 +6,11 @@ import File from "./File";
 
 export class MyBrowser extends Component {
   render() {
-    const selectedFolders = this.props.expandedFolders.reduce(
-      (acc, item, idx) => {
-        const folderName = item.match(/^\/[^/]*/)[0].slice(1);
-        acc[folderName] = item.slice(folderName.length + 1);
-        return acc;
-      },
-      {}
-    );
+    const selectedFolders = this.props.expandedFolders.reduce((acc, item) => {
+      const folderName = item.match(/^\/[^/]*/)[0].slice(1);
+      acc[folderName] = item.slice(folderName.length + 1);
+      return acc;
+    }, {});
 
     return data.map(item => {
       if (item.type === "FOLDER") {

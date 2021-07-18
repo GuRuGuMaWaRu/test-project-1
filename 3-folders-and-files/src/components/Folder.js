@@ -23,7 +23,8 @@ export class Folder extends Component {
     let path = null;
 
     if (selectedPath) {
-      selectedFolder = selectedPath.match(/^\/[^/]*/)[0].slice(1);
+      const slashIndex = selectedPath.indexOf("/", 1);
+      selectedFolder = selectedPath.slice(1, slashIndex);
       path = selectedPath.slice(selectedFolder.length + 1);
     }
 
@@ -34,11 +35,11 @@ export class Folder extends Component {
           style={{ marginLeft: `${(level - 1) * 2}rem` }}
           onClick={this.handleExpansion}
         >
-          {this.state.expanded && "+"}
+          {this.state.expanded && "+ "}
           {name}
         </div>
         {this.state.expanded &&
-          children.map((item, idx) => {
+          children.map(item => {
             if (item.type === "FOLDER") {
               return (
                 <Folder
