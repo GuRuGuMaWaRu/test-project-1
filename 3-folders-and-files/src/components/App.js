@@ -5,7 +5,13 @@ import MyBrowser from "./MyBrowser";
 function App() {
   return (
     <div className="App">
-      <MyBrowser />
+      <MyBrowser
+        expandedFolders={[
+          "/Common7",
+          "/SDK/Bootstrapper",
+          "/VC/redist/onecore",
+        ]}
+      />
     </div>
   );
 }

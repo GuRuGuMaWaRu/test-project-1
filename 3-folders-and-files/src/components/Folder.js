@@ -8,7 +8,7 @@ export class Folder extends Component {
     super(props);
 
     this.state = {
-      expanded: false,
+      expanded: this.props.selectedPath ? true : false,
     };
     this.handleExpansion = this.handleExpansion.bind(this);
   }
@@ -18,7 +18,14 @@ export class Folder extends Component {
   }
 
   render() {
-    const { name, children, level } = this.props;
+    const { name, children, level, selectedPath = null } = this.props;
+    let selectedFolder = null;
+    let path = null;
+
+    if (selectedPath) {
+      selectedFolder = selectedPath.match(/^\/[^/]*/)[0].slice(1);
+      path = selectedPath.slice(selectedFolder.length + 1);
+    }
 
     return (
       <>
@@ -33,7 +40,14 @@ export class Folder extends Component {
         {this.state.expanded &&
           children.map((item, idx) => {
             if (item.type === "FOLDER") {
-              return <Folder key={item.name} level={level + 1} {...item} />;
+              return (
+                <Folder
+                  key={item.name}
+                  level={level + 1}
+                  selectedPath={selectedFolder === item.name ? path : null}
+                  {...item}
+                />
+              );
             } else {
               return <File key={item.name} level={level + 1} {...item} />;
             }
