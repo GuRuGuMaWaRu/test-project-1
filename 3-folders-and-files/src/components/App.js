@@ -12,6 +12,33 @@ const testExpandedFolders = [
   "/VC/crt",
 ];
 
+const searchForFiles = (data, searchValue) => {
+  const regex = new RegExp(searchValue, "i");
+  const finalResults = [];
+  let path = [];
+
+  const recursiveFn = data => {
+    data.forEach(item => {
+      if (item.children) {
+        path.push(item.name);
+        recursiveFn(item.children);
+      } else {
+        if (regex.test(item.name)) {
+          path.push(item.name);
+          finalResults.push("/" + path.join("/"));
+          path = [];
+        }
+      }
+    });
+
+    path.pop();
+  };
+
+  recursiveFn(data);
+
+  return finalResults;
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +51,7 @@ class App extends Component {
 
   handleSearch(e) {
     this.setState({ searchValue: e.target.value });
+    console.log(searchForFiles(data, e.target.value));
   }
 
   render() {
