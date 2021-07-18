@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-import data from "../data/data.json";
+import { selectFolders } from "../api/helpers";
 import Folder from "./Folder";
 import File from "./File";
 
-export class MyBrowser extends Component {
+export class MyBrowser extends PureComponent {
   render() {
-    const selectedFolders = this.props.expandedFolders.reduce((acc, item) => {
-      const folderName = item.match(/^\/[^/]*/)[0].slice(1);
-      acc[folderName] = item.slice(folderName.length + 1);
-      return acc;
-    }, {});
+    const { data, expandedFolders } = this.props;
+
+    const selectedFolders = selectFolders(expandedFolders);
 
     return data.map(item => {
       if (item.type === "FOLDER") {
@@ -18,7 +16,7 @@ export class MyBrowser extends Component {
           <Folder
             key={item.name}
             level={1}
-            selectedPath={selectedFolders[item.name]}
+            selectedPaths={selectedFolders[item.name]}
             {...item}
           />
         );

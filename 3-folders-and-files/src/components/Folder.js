@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import { selectFolders } from "../api/helpers";
 import "../styles/Folder.css";
 import File from "./File";
 
@@ -8,7 +9,7 @@ export class Folder extends Component {
     super(props);
 
     this.state = {
-      expanded: this.props.selectedPath ? true : false,
+      expanded: this.props.selectedPaths ? true : false,
     };
     this.handleExpansion = this.handleExpansion.bind(this);
   }
@@ -18,14 +19,11 @@ export class Folder extends Component {
   }
 
   render() {
-    const { name, children, level, selectedPath = null } = this.props;
-    let selectedFolder = null;
-    let path = null;
+    const { name, children, level, selectedPaths = null } = this.props;
+    let selectedFolders = null;
 
-    if (selectedPath) {
-      const slashIndex = selectedPath.indexOf("/", 1);
-      selectedFolder = selectedPath.slice(1, slashIndex);
-      path = selectedPath.slice(selectedFolder.length + 1);
+    if (selectedPaths) {
+      selectedFolders = selectFolders(selectedPaths);
     }
 
     return (
@@ -45,7 +43,7 @@ export class Folder extends Component {
                 <Folder
                   key={item.name}
                   level={level + 1}
-                  selectedPath={selectedFolder === item.name ? path : null}
+                  selectedPaths={selectedFolders[item.name]}
                   {...item}
                 />
               );
