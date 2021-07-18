@@ -43,7 +43,9 @@ export class Folder extends Component {
                 <Folder
                   key={item.name}
                   level={level + 1}
-                  selectedPaths={selectedFolders[item.name]}
+                  selectedPaths={
+                    selectedFolders ? selectedFolders[item.name] : null
+                  }
                   {...item}
                 />
               );
