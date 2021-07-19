@@ -16,6 +16,10 @@ const testExpandedFolders = [
 ];
 
 const searchForFiles = (data, searchValue) => {
+  if (!searchValue) {
+    return [];
+  }
+
   const regex = new RegExp(searchValue, "i");
   const finalResults = [];
   let path = [];
@@ -47,7 +51,7 @@ class App extends Component {
     super(props);
     this.state = {
       searchValue: "",
-      expandedFolders: [...testExpandedFolders],
+      expandedFolders: [],
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -74,7 +78,7 @@ class App extends Component {
           value={searchValue}
           onChange={this.handleSearch}
         ></input>
-        <SearchContext.Provider value={true}>
+        <SearchContext.Provider value={!!this.state.searchValue}>
           <MyBrowser data={data} expandedFolders={expandedFolders} />
         </SearchContext.Provider>
       </div>
