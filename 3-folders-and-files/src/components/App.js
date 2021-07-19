@@ -54,7 +54,7 @@ class App extends Component {
 
   _debouncedSearch = debounce(
     searchResults => this.setState({ expandedFolders: searchResults }),
-    1000
+    500
   );
 
   handleSearch(e) {
@@ -74,7 +74,7 @@ class App extends Component {
           value={searchValue}
           onChange={this.handleSearch}
         ></input>
-        <SearchContext.Provider value={!!this.state.searchValue}>
+        <SearchContext.Provider value={true}>
           <MyBrowser data={data} expandedFolders={expandedFolders} />
         </SearchContext.Provider>
       </div>
