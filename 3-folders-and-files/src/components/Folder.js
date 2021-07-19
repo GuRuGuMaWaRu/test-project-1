@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { selectFolders } from "../api/helpers";
 import "../styles/Folder.css";
-import File from "./File";
+import Renderer from "./Renderer";
 
 export class Folder extends Component {
   constructor(props) {
@@ -16,6 +16,12 @@ export class Folder extends Component {
 
   handleExpansion() {
     this.setState(state => ({ expanded: !state.expanded }));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.selectedPaths !== this.props.selectedPaths) {
+      this.setState({ expanded: this.props.selectedPaths ? true : false });
+    }
   }
 
   render() {
@@ -36,23 +42,13 @@ export class Folder extends Component {
           {this.state.expanded && "+ "}
           {name}
         </div>
-        {this.state.expanded &&
-          children.map(item => {
-            if (item.type === "FOLDER") {
-              return (
-                <Folder
-                  key={item.name}
-                  level={level + 1}
-                  selectedPaths={
-                    selectedFolders ? selectedFolders[item.name] : null
-                  }
-                  {...item}
-                />
-              );
-            } else {
-              return <File key={item.name} level={level + 1} {...item} />;
-            }
-          })}
+        {this.state.expanded && (
+          <Renderer
+            children={children}
+            level={level + 1}
+            selectedFolders={selectedFolders}
+          />
+        )}
       </>
     );
   }

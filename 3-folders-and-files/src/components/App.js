@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import debounce from "lodash.debounce";
+
+import { SearchContext } from "../contexts/search";
 import data from "../data/data.json";
 import "../styles/App.css";
 import MyBrowser from "./MyBrowser";
@@ -26,7 +29,7 @@ const searchForFiles = (data, searchValue) => {
         if (regex.test(item.name)) {
           path.push(item.name);
           finalResults.push("/" + path.join("/"));
-          path = [];
+          path.pop();
         }
       }
     });
@@ -49,9 +52,15 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
+  _debouncedSearch = debounce(
+    searchResults => this.setState({ expandedFolders: searchResults }),
+    1000
+  );
+
   handleSearch(e) {
     this.setState({ searchValue: e.target.value });
-    console.log(searchForFiles(data, e.target.value));
+    const foundPaths = searchForFiles(data, e.target.value);
+    this._debouncedSearch(foundPaths);
   }
 
   render() {
@@ -65,7 +74,9 @@ class App extends Component {
           value={searchValue}
           onChange={this.handleSearch}
         ></input>
-        <MyBrowser data={data} expandedFolders={expandedFolders} />
+        <SearchContext.Provider value={!!this.state.searchValue}>
+          <MyBrowser data={data} expandedFolders={expandedFolders} />
+        </SearchContext.Provider>
       </div>
     );
   }

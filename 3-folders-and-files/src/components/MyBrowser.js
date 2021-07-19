@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react";
 
 import { selectFolders } from "../api/helpers";
-import Folder from "./Folder";
-import File from "./File";
+import Renderer from "./Renderer";
 
 export class MyBrowser extends PureComponent {
   render() {
@@ -10,20 +9,7 @@ export class MyBrowser extends PureComponent {
 
     const selectedFolders = selectFolders(expandedFolders);
 
-    return data.map(item => {
-      if (item.type === "FOLDER") {
-        return (
-          <Folder
-            key={item.name}
-            level={1}
-            selectedPaths={selectedFolders[item.name]}
-            {...item}
-          />
-        );
-      } else {
-        return <File key={item.name} level={1} {...item} />;
-      }
-    });
+    return <Renderer children={data} selectedFolders={selectedFolders} />;
   }
 }
 
