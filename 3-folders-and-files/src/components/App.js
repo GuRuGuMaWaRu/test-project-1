@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import debounce from "lodash.debounce";
 
 import { SearchContext } from "../contexts/search";
+import { selectFolders } from "../api/helpers";
 import data from "../data/data.json";
 import "../styles/App.css";
-import MyBrowser from "./MyBrowser";
+import File from "./File";
+import Folder from "./Folder";
 
 const testExpandedFolders = [
   "/Common7",
@@ -70,6 +72,8 @@ class App extends Component {
   render() {
     const { searchValue, expandedFolders } = this.state;
 
+    const selectedFolders = selectFolders(expandedFolders);
+
     return (
       <div className="App">
         <input
@@ -79,7 +83,30 @@ class App extends Component {
           onChange={this.handleSearch}
         ></input>
         <SearchContext.Provider value={!!this.state.searchValue}>
-          <MyBrowser data={data} expandedFolders={expandedFolders} />
+          {data.map(item => {
+            if (item.type === "FOLDER") {
+              return (
+                <Folder
+                  key={item.name + 1}
+                  level={1}
+                  selectedPaths={
+                    selectedFolders ? selectedFolders[item.name] : null
+                  }
+                  {...item}
+                />
+              );
+            } else {
+              if (!!this.state.searchValue) {
+                if (selectedFolders && selectedFolders[item.name]) {
+                  return <File key={item.name + 1} level={1} {...item} />;
+                } else {
+                  return null;
+                }
+              }
+
+              return <File key={item.name + 1} level={1} {...item} />;
+            }
+          })}
         </SearchContext.Provider>
       </div>
     );
