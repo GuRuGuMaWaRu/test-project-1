@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
+import { SearchContext } from "../contexts/search";
 import { selectFolders } from "../api/helpers";
 import "../styles/Folder.css";
-import Renderer from "./Renderer";
+import File from "./File";
 
 export class Folder extends Component {
   constructor(props) {
@@ -43,11 +44,38 @@ export class Folder extends Component {
           {name}
         </div>
         {this.state.expanded && (
-          <Renderer
-            children={children}
-            level={level + 1}
-            selectedFolders={selectedFolders}
-          />
+          <SearchContext.Consumer>
+            {searchActive =>
+              children.map(item => {
+                if (item.type === "FOLDER") {
+                  return (
+                    <Folder
+                      key={item.name + level}
+                      level={level + 1}
+                      selectedPaths={
+                        selectedFolders ? selectedFolders[item.name] : null
+                      }
+                      {...item}
+                    />
+                  );
+                } else {
+                  if (searchActive) {
+                    if (selectedFolders && selectedFolders[item.name]) {
+                      return (
+                        <File key={item.name + 1} level={level + 1} {...item} />
+                      );
+                    } else {
+                      return null;
+                    }
+                  }
+
+                  return (
+                    <File key={item.name + 1} level={level + 1} {...item} />
+                  );
+                }
+              })
+            }
+          </SearchContext.Consumer>
         )}
       </>
     );
