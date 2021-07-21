@@ -48,6 +48,21 @@ export class Folder extends Component {
             {searchActive =>
               children.map(item => {
                 if (item.type === "FOLDER") {
+                  if (searchActive) {
+                    if (selectedFolders[item.name]) {
+                      return (
+                        <Folder
+                          key={item.name + level}
+                          level={level + 1}
+                          selectedPaths={selectedFolders[item.name]}
+                          {...item}
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  }
+
                   return (
                     <Folder
                       key={item.name + level}

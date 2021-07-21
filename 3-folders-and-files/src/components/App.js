@@ -71,6 +71,7 @@ class App extends Component {
 
   render() {
     const { searchValue, expandedFolders } = this.state;
+    const searchActive = !!this.state.searchValue;
 
     const selectedFolders = selectFolders(expandedFolders);
 
@@ -82,22 +83,35 @@ class App extends Component {
           value={searchValue}
           onChange={this.handleSearch}
         ></input>
-        <SearchContext.Provider value={!!this.state.searchValue}>
+        <SearchContext.Provider value={searchActive}>
           {data.map(item => {
             if (item.type === "FOLDER") {
+              if (searchActive) {
+                if (selectedFolders[item.name]) {
+                  return (
+                    <Folder
+                      key={item.name + 1}
+                      level={1}
+                      selectedPaths={selectedFolders[item.name]}
+                      {...item}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              }
+
               return (
                 <Folder
                   key={item.name + 1}
                   level={1}
-                  selectedPaths={
-                    selectedFolders ? selectedFolders[item.name] : null
-                  }
+                  selectedPaths={selectedFolders[item.name]}
                   {...item}
                 />
               );
             } else {
-              if (!!this.state.searchValue) {
-                if (selectedFolders && selectedFolders[item.name]) {
+              if (searchActive) {
+                if (selectedFolders[item.name]) {
                   return <File key={item.name + 1} level={1} {...item} />;
                 } else {
                   return null;
