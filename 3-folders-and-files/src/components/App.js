@@ -86,39 +86,30 @@ class App extends Component {
         <SearchContext.Provider value={searchActive}>
           {data.map(item => {
             if (item.type === "FOLDER") {
-              if (searchActive) {
-                if (selectedFolders[item.name]) {
-                  return (
-                    <Folder
-                      key={item.name + 1}
-                      level={1}
-                      selectedPaths={selectedFolders[item.name]}
-                      {...item}
-                    />
-                  );
-                } else {
-                  return null;
-                }
+              if (
+                !searchActive ||
+                (searchActive && selectedFolders[item.name])
+              ) {
+                return (
+                  <Folder
+                    key={item.name + 1}
+                    level={1}
+                    selectedPaths={selectedFolders[item.name]}
+                    {...item}
+                  />
+                );
+              } else {
+                return null;
               }
-
-              return (
-                <Folder
-                  key={item.name + 1}
-                  level={1}
-                  selectedPaths={selectedFolders[item.name]}
-                  {...item}
-                />
-              );
             } else {
-              if (searchActive) {
-                if (selectedFolders[item.name]) {
-                  return <File key={item.name + 1} level={1} {...item} />;
-                } else {
-                  return null;
-                }
+              if (
+                !searchActive ||
+                (searchActive && selectedFolders[item.name])
+              ) {
+                return <File key={item.name + 1} level={1} {...item} />;
+              } else {
+                return null;
               }
-
-              return <File key={item.name + 1} level={1} {...item} />;
             }
           })}
         </SearchContext.Provider>

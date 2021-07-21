@@ -48,45 +48,34 @@ export class Folder extends Component {
             {searchActive =>
               children.map(item => {
                 if (item.type === "FOLDER") {
-                  if (searchActive) {
-                    if (selectedFolders[item.name]) {
-                      return (
-                        <Folder
-                          key={item.name + level}
-                          level={level + 1}
-                          selectedPaths={selectedFolders[item.name]}
-                          {...item}
-                        />
-                      );
-                    } else {
-                      return null;
-                    }
+                  if (
+                    !searchActive ||
+                    (searchActive && selectedFolders[item.name])
+                  ) {
+                    return (
+                      <Folder
+                        key={item.name + level}
+                        level={level + 1}
+                        selectedPaths={
+                          selectedFolders ? selectedFolders[item.name] : null
+                        }
+                        {...item}
+                      />
+                    );
+                  } else {
+                    return null;
                   }
-
-                  return (
-                    <Folder
-                      key={item.name + level}
-                      level={level + 1}
-                      selectedPaths={
-                        selectedFolders ? selectedFolders[item.name] : null
-                      }
-                      {...item}
-                    />
-                  );
                 } else {
-                  if (searchActive) {
-                    if (selectedFolders && selectedFolders[item.name]) {
-                      return (
-                        <File key={item.name + 1} level={level + 1} {...item} />
-                      );
-                    } else {
-                      return null;
-                    }
+                  if (
+                    !searchActive ||
+                    (searchActive && selectedFolders[item.name])
+                  ) {
+                    return (
+                      <File key={item.name + 1} level={level + 1} {...item} />
+                    );
+                  } else {
+                    return null;
                   }
-
-                  return (
-                    <File key={item.name + 1} level={level + 1} {...item} />
-                  );
                 }
               })
             }
